@@ -1,618 +1,444 @@
+from pathlib import Path
+path = Path("/mnt/data/index-with-5-header.html")
+html = path.read_text(encoding="utf-8")
+html[:2000]
+len(html)
+html
+for i in range(0, len(html), 4000):
+    print("===PART", i//4000, "===\n")
+    print(html[i:i+4000])
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Women & Work — Interactive Site (v6)</title>
-  <meta name="description" content="Single-page academic site with interactive essays about women in the workplace: Equal Pay, Remote Work, Leadership, Overtime, Gender Pay Gap. Built for group project: Ali & team. Includes tabs for Essays, Sources, Scholars, Notes. Edit Mode protected by passcode; autosave.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>Women and Work – Group Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root{
-      /* Single light academic theme */
-      --bg:#f7f9fc;
-      --panel:#ffffff;
-      --ink:#0e1525;
-      --muted:#7a849a;
-      --accent:#60c2a0;
-      --accent-soft:#e9fbf5;
-      --accent-strong:#0e1c43;
-      --line:#d7e0f0;
-      --danger:#e55353;
-      --radius-lg:22px;
-      --radius-md:14px;
-      --shadow:0 18px 40px rgba(15,35,52,.10);
-      --ring:0 0 0 2px rgba(96,194,160,.65);
+    :root {
+      --bg: #f5f7fb;
+      --card-bg: #ffffff;
+      --primary: #0e1c43;
+      --accent: #60c2a0;
+      --accent-soft: rgba(96, 194, 160, 0.12);
+      --text: #222222;
+      --muted: #666666;
+      --border: #dde2ee;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#f0f4ff,#f7f9fc 58%,#f2f9f6);color:var(--ink);-webkit-font-smoothing:antialiased}
-    body{min-height:100vh}
-    a{color:var(--accent-strong);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .shell{max-width:1120px;margin:0 auto;padding:20px 16px 32px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo-badge{width:40px;height:40px;border-radius:18px;background:linear-gradient(135deg,#0e1c43,#60c2a0);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(14,28,67,.35);color:#fff;font-weight:900;font-size:20px}
-    .brand-text h1{margin:0;font-family:"Montserrat";font-weight:900;font-size:clamp(22px,2.4vw,30px);letter-spacing:.04em;text-transform:uppercase}
-    .brand-text p{margin:3px 0 0;color:var(--muted);font-size:13px}
-    .meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:12px;color:var(--muted)}
-    .pill-meta{padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:600;color:#24314a}
-    .tabs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-    .tab-btn{border-radius:999px;border:1px solid transparent;padding:6px 13px;font-size:13px;font-weight:600;color:#3b4660;background:rgba(255,255,255,.9);cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 6px 16px rgba(15,35,52,.06)}
-    .tab-btn span.i{width:18px;height:18px;border-radius:999px;border:1px solid #d4deef;display:flex;align-items:center;justify-content:center;font-size:11px}
-    .tab-btn.active{background:var(--accent-strong);color:#f5f7ff;border-color:#020824}
-    .tab-btn.active span.i{border-color:#60c2a0;background:#1b2c55}
-    .tab-btn:hover:not(.active){border-color:#c4d0ea}
-    .bar{margin:10px 0 18px;padding:10px 12px;border-radius:var(--radius-md);background:linear-gradient(90deg,rgba(14,28,67,.96),#122852 48%,#163561);color:#edf2ff;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 14px 32px rgba(4,12,40,.65)}
-    .bar-main{font-size:13px;max-width:620px}
-    .bar-main strong{font-weight:800}
-    .bar-actions{display:flex;align-items:center;gap:8px}
-    .btn{border-radius:999px;border:1px solid #d3ddf0;background:#ffffff;color:#1d2942;font-size:12px;font-weight:700;padding:6px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 6px 14px rgba(13,30,54,.12);transition:transform .05s ease,box-shadow .05s ease,background .1s}
-    .btn:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(13,30,54,.18);background:#f5f7ff}
-    .btn.brand{background:var(--accent);border-color:#1c7557;color:#06211a;box-shadow:0 10px 24px rgba(96,194,160,.55)}
-    .btn.brand:hover{background:#79d2b2}
-    .btn.ghost{background:transparent;border-style:dashed;color:#e0e6ff;border-color:#6b7aa8;box-shadow:none}
-    .btn.danger{border-color:rgba(229,83,83,.8);color:#5a1010;background:#fff1f1}
-    .badge-lock{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:999px;border:1px solid rgba(222,231,250,.75);background:rgba(8,20,50,.75);font-size:11px;color:#cdd7ff}
-    .badge-lock span.dot{width:6px;height:6px;border-radius:999px;background:#ffb648}
-    .container{margin-top:6px}
-    main section{padding:28px 0}
-    .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:16px}
-    .subtitle{color:var(--muted);margin:0 0 8px}
-    .pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .pill{padding:6px 10px;border-radius:999px;background:#f2f5ff;border:1px solid var(--line);color:#41516d;font-weight:800;font-size:12px}
-    .hidden{display:none !important}
-    /* Essays */
-    .workspace{display:grid;grid-template-columns:280px 1fr;gap:18px}
-    @media (max-width: 980px){.workspace{grid-template-columns:1fr}}
-    .side{position:sticky;top:92px;align-self:start;background:#f8f9fe;border:1px solid var(--line);border-radius:14px;padding:12px}
-    .side h4{margin:6px 0 10px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-    .side .item{display:block;padding:10px 12px;margin:6px 0;border-radius:999px;border:1px dashed var(--line);color:#24314a;font-weight:800;font-size:13px;background:#ffffff}
-    .side .item:hover{background:#f6f9ff}
-    .topic{border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:var(--shadow);margin-bottom:16px}
-    .topic-head{display:flex;align-items:end;justify-content:space-between;gap:8px;padding:14px 14px 8px;border-bottom:1px dashed var(--line)}
-    .topic h3{font-family:"Montserrat";font-size:clamp(22px,2.3vw,32px);margin:0;cursor:text}
-    .tag{color:var(--accent);font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
-    .topic-body{padding:14px}
-    .label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:900;margin:10px 0 6px}
-    .field{min-height:160px;border:2px dashed #dfe7f3;border-radius:14px;padding:14px;font-weight:700;color:#1f2d4d}
-    .field[contenteditable="true"]:focus{outline:var(--ring);background:#f9fbff}
-    .full{min-height:1300px}
-    .tall{min-height:760px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width: 900px){.row{grid-template-columns:1fr}}
-    .utils{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
-    .wc{font-size:12px;color:var(--muted)}
-    .controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-    /* Sources */
-    .grid{display:grid;grid-template-columns:1.5fr 1.1fr;gap:18px}
-    @media (max-width: 980px){.grid{grid-template-columns:1fr}}
-    .source-list ol{margin-top:8px;padding-left:22px}
-    .source-list li{margin-bottom:6px;font-size:13px}
-    .card{border-radius:var(--radius-md);border:1px dashed var(--line);padding:10px 12px;background:#f9fbff;font-size:13px}
-    .card strong{font-weight:800}
-    .tagline{font-size:13px;color:var(--muted)}
-    .sources-tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#7f8aad;font-weight:800;margin-bottom:4px}
-    /* Scholars / Notes */
-    .cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    @media (max-width: 900px){.cols-3{grid-template-columns:1fr}}
-    .note{min-height:180px}
-    .scholar{border-radius:18px;border:1px solid var(--line);padding:12px;background:#fdfdff}
-    .scholar h3{margin:4px 0 6px;font-size:16px}
-    .scholar p{margin:0;font-size:13px;color:#485570}
-    footer{margin-top:12px;padding-top:10px;border-top:1px dashed #d1daec;font-size:11px;color:#8a96b0;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
-    .caps{letter-spacing:.16em;text-transform:uppercase;font-weight:800}
-    /* Lock state */
-    body.locked .field[contenteditable="true"],
-    body.locked h1[contenteditable],body.locked h3[contenteditable]{pointer-events:none}
-    body.locked .field[contenteditable="true"]{border-style:dotted;background:#f5f7fd}
-    body.unlocked .badge-lock span.dot{background:#60c2a0}
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top left, #e2f5ff, #f5f7fb 45%, #f9f9ff);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 16px 48px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0e1c43, #143263);
+      border-radius: 18px;
+      padding: 24px 24px 28px;
+      color: #ffffff;
+      box-shadow: 0 20px 40px rgba(5, 17, 46, 0.35);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+      letter-spacing: 0.03em;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+
+    .meta-row span {
+      opacity: 0.95;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      font-size: 0.78rem;
+      backdrop-filter: blur(8px);
+    }
+
+    nav {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      color: #ffffff;
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    }
+
+    nav a:hover {
+      background: #ffffff;
+      color: #0e1c43;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+    }
+
+    main {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(260px, 1.4fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      header {
+        position: static;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 22px 22px 26px;
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .card + .card {
+      margin-top: 18px;
+    }
+
+    h2 {
+      margin: 0 0 6px;
+      color: var(--primary);
+      font-size: 1.25rem;
+    }
+
+    h3 {
+      margin-top: 24px;
+      margin-bottom: 6px;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    p {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+    }
+
+    .tagline {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .highlight {
+      background: var(--accent-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+      border: 1px solid rgba(96, 194, 160, 0.5);
+      margin-bottom: 12px;
+    }
+
+    .refs-list {
+      margin: 6px 0 0;
+      padding-left: 18px;
+      font-size: 0.88rem;
+    }
+
+    .refs-list li {
+      margin-bottom: 4px;
+    }
+
+    .sidebar-card h3 {
+      font-size: 1rem;
+    }
+
+    .sidebar-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .sidebar-list li {
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .sidebar-list li:last-child {
+      border-bottom: none;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #edf5ff;
+      color: #143263;
+      margin-left: 4px;
+    }
+
+    footer {
+      margin-top: 24px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer span {
+      background: #ffffff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      display: inline-block;
+    }
   </style>
 </head>
-<body class="locked">
-  <div class="shell">
+<body>
+  <div class="page">
     <header>
-      <div class="brand">
-        <div class="logo-badge">W</div>
-        <div class="brand-text">
-          <h1>Women &amp; Work</h1>
-          <p>Interactive essay workspace for our English group project</p>
+      <h1>Women and Work</h1>
+      <p>Group research project on gender, employment, and modern work culture.</p>
+      <div class="meta-row">
+        <span>Course: English Communication &amp; Academic Writing</span>
+        <div class="chips">
+          <span class="chip">Abdullah Al-Salem University</span>
+          <span class="chip">College of Engineering</span>
+          <span class="chip">Group Project</span>
         </div>
       </div>
-      <div class="meta">
-        <div class="pill-meta">Ali Dashti &amp; Group — AASU • 2025</div>
-        <div class="badge-lock"><span class="dot"></span> Edit Mode: <strong id="lockState">Locked</strong></div>
-      </div>
+      <nav>
+        <a href="#topic1">1. Equal Pay</a>
+        <a href="#topic2">2. Remote Work</a>
+        <a href="#topic3">3. Women in Leadership</a>
+        <a href="#topic4">4. Overtime Culture</a>
+        <a href="#topic5">5. Gender Pay Gap (Debate)</a>
+        <a href="#refs">References</a>
+      </nav>
     </header>
 
-    <nav class="tabs" aria-label="Main sections">
-      <button class="tab-btn active" data-tab="essays"><span class="i">1</span>Essays</button>
-      <button class="tab-btn" data-tab="sources"><span class="i">2</span>Sources</button>
-      <button class="tab-btn" data-tab="scholars"><span class="i">3</span>Scholars</button>
-      <button class="tab-btn" data-tab="notes"><span class="i">4</span>Notes</button>
-    </nav>
-
-    <div class="bar">
-      <div class="bar-main">
-        <strong>Tip:</strong> This page is designed as a private “control center” for our project. Use Edit Mode to tweak the essays, then export or copy them into Word/PowerPoint. Local autosave keeps our changes on this device.
-      </div>
-      <div class="bar-actions">
-        <button class="btn ghost" id="enterEdit">Unlock Edit</button>
-        <button class="btn ghost" id="exitEdit">Lock</button>
-      </div>
-    </div>
-
     <main>
-      <!-- TAB 1: ESSAYS -->
-      <section id="tab-essays" class="container" role="tabpanel">
-        <div class="controls">
-          <button class="btn" id="expandAll">Expand All</button>
-          <button class="btn" id="collapseAll">Collapse All</button>
-          <button class="btn brand" id="resetEssays">Reset Placeholders</button>
-        </div>
-
-        <div class="workspace">
-          <aside class="side panel">
-            <h4>Outline</h4>
-            <a class="item" href="#t1">1. Equal Pay: Fairness or Unrealistic Expectation?</a>
-            <a class="item" href="#t2">2. Remote Work: Freedom or Distraction?</a>
-            <a class="item" href="#t3">3. Women in Leadership: Quotas or Merit?</a>
-            <a class="item" href="#t4">4. Overtime Culture: Dedication or Exploitation?</a>
-            <a class="item" href="#t5">5. Gender Pay Gap: Reality or Myth?</a>
-          </aside>
-
-          <div class="stack">
-
-            <!-- Topic 1 -->
-            <article class="topic" id="t1">
-              <div class="topic-head">
-                <h3 id="t1-title" contenteditable="false">1. Equal Pay: Fairness or Unrealistic Expectation?</h3>
-                <span class="tag">Essay</span>
-              </div>
-              <div class="topic-body">
-                <div class="utils">
-                  <button class="btn copy" data-target="t1-full">Copy</button>
-                  <button class="btn" onclick="exportTxt('t1-full','topic1.txt')">Export .txt</button>
-                  <button class="btn" onclick="printBlock('t1-full')">Print</button>
-                  <span class="wc" id="wc-t1">0 words</span>
-                </div>
-                <div class="label">Full Essay</div>
-                <div id="t1-full" class="field full" contenteditable="false"><p>In debates about women and work, equal pay is usually presented as a simple moral equation: if two people do the same job, they should receive the same paycheck. At first glance this sounds obvious and almost boring, but once we look at how workplaces actually operate, equal pay turns into a complex mix of fairness, market logic, and social expectations. Some employers defend pay gaps by saying that salaries are just a result of experience, negotiation skills, or “the market,” while many women highlight concrete examples where they are clearly paid less than male colleagues for doing very similar work. The question, then, is not only whether equal pay is fair, but whether it is realistic in today’s labour market and what changes would be needed to get closer to it.</p><p>One important argument for equal pay is that it protects the basic idea of dignity at work. When a woman and a man sit in the same office, with the same job title and performance, but one receives a noticeably smaller salary, the message is that one person’s work is worth less. This does not just affect the individual employee; it shapes how society values women’s time, education, and contribution to the economy. Research from organisations such as the International Labour Organization and the OECD shows that even after controlling for education and experience, women in many countries still earn less on average than men. This suggests that the gap is not only about personal choices, but also about structural patterns in hiring, promotion, and pay.</p><p>However, critics argue that equal pay rules can be unrealistic or even unfair if they ignore legitimate differences between workers. For example, two people with the same job title might have different levels of responsibility, different sales results, or different working hours. Companies also worry that strict regulation will reduce their flexibility to reward top performers or to react quickly to market conditions. Some employers use this argument to resist pay transparency laws or salary audits. The problem is that “flexibility” can easily become a convenient cover for biased decisions that are never questioned, because nobody can see the numbers.</p><p>A more realistic way to understand equal pay is not as a promise that every salary will be identical, but as a commitment that gender itself will not be the reason for the difference. To achieve this, workplaces need tools like pay transparency, clear salary ranges for each position, and regular equal-pay audits carried out by independent teams. When employees are allowed to discuss their salaries without fear, hidden injustices become visible. Several European countries that introduced these measures did not suddenly erase every pay gap, but they were able to reduce unexplained differences and force companies to justify their pay structures using objective criteria instead of vague explanations about “fit” or “market value.”</p><p>In conclusion, equal pay is both a fairness issue and a realistic goal—if we define it carefully and support it with strong policies. It is unrealistic to expect a world in which every worker in the same job earns exactly the same amount, but it is completely reasonable to demand that gender should never be the silent factor that pushes a woman’s salary down. When governments require transparency and organisations take responsibility for monitoring their own pay systems, equal pay stops being a slogan on social media and becomes a concrete standard for evaluating whether a workplace is truly just.</p></div>
-                <details>
-                  <summary>Optional Sections</summary>
-                  <div class="row">
-                    <div>
-                      <div class="label">Outline</div>
-                      <div id="t1-out" class="field" contenteditable="true">[I. Intro • II. Arguments • III. Counter-arguments • IV. Conclusion]</div>
-                    </div>
-                    <div>
-                      <div class="label">References</div>
-                      <div id="t1-ref" class="field" contenteditable="false"><ul>
-  <li>International Labour Organization. (2023). <em>Global Wage Report 2022–23: The impact of inflation and COVID-19 on wages and purchasing power</em>.</li>
-  <li>OECD. (2022). <em>Gender wage gap (indicator)</em>. OECD Data.</li>
-  <li>European Commission. (2020). <em>Tackling the gender pay gap in the European Union</em>.</li>
-</ul></div>
-                    </div>
-                  </div>
-                </details>
-              </div>
-            </article>
-
-            <!-- Topic 2 -->
-            <article class="topic" id="t2">
-              <div class="topic-head">
-                <h3 id="t2-title" contenteditable="false">2. Remote Work: Freedom or Distraction?</h3>
-                <span class="tag">Essay</span>
-              </div>
-              <div class="topic-body">
-                <div class="utils">
-                  <button class="btn copy" data-target="t2-full">Copy</button>
-                  <button class="btn" onclick="exportTxt('t2-full','topic2.txt')">Export .txt</button>
-                  <button class="btn" onclick="printBlock('t2-full')">Print</button>
-                  <span class="wc" id="wc-t2">0 words</span>
-                </div>
-                <div class="label">Full Essay</div>
-                <div id="t2-full" class="field full" contenteditable="false"><p>The rapid growth of remote work during and after the COVID-19 pandemic has changed what we imagine when we hear the word “office.” For many women, especially those balancing paid work with unpaid care responsibilities, remote work feels like long-awaited freedom: no commute, more control over the schedule, and the possibility of staying in the labour market while also taking care of children or elderly parents. At the same time, teachers, managers, and even some employees worry that working from home can reduce focus, weaken team spirit, and turn the home into a place of constant distraction. The reality lies somewhere in between these two extremes, and it depends heavily on how remote work is designed and supported.</p><p>On the positive side, remote work can open doors that were previously locked. Women who live far from major cities, who have limited access to transportation, or who face social restrictions on late-night commuting suddenly have access to global jobs through a laptop and a stable internet connection. Employers also benefit from a wider talent pool and can hire people based on skills rather than physical presence in a specific building. Studies by organisations such as McKinsey and the World Economic Forum indicate that flexible and remote work arrangements are strongly linked to higher retention rates for women, particularly after major life events like childbirth. In this sense, remote work can be a practical tool for reducing the gender gap in workforce participation.</p><p>At the same time, the “freedom” of remote work can quickly turn into invisible pressure. Without clear boundaries, some women find themselves answering emails late at night, taking calls during family time, and feeling guilty whenever they are away from the screen. Instead of having two separate spaces—home and office—they end up with a single blended environment where they are expected to be available for everyone at once. This can increase stress and make it hard to fully concentrate on either work or personal life. In addition, not every home is a quiet, private, or safe place for productive work, and not every worker has access to reliable technology and high-speed internet.</p><p>Another concern is that remote workers, especially women, can become “out of sight, out of mind” when it comes to promotions, networking, and leadership opportunities. Informal conversations that happen in physical offices—over coffee, in hallways, or during quick team meetings—often play a big role in how managers form opinions about who is committed and who is ready for more responsibility. If women are more likely to choose remote or hybrid options, they risk being seen as less dedicated, even if they deliver the same or better results. Without intentional policies, remote work can unintentionally reproduce old inequalities in a new digital form.</p><p>For remote work to function as true freedom rather than a new type of distraction, organisations need to create clear structures. This includes setting reasonable expectations for availability, providing equipment and technical support, training managers in leading hybrid teams, and measuring performance based on results instead of physical presence. Workers, on their side, need support in learning how to design routines, protect focus time, and communicate boundaries to both colleagues and family members. When these elements are in place, remote work can offer women more control over their careers and their daily lives, without forcing them to choose between productivity and wellbeing.</p><p>In short, remote work is not automatically liberating and not automatically harmful. It is a tool whose impact depends on power, policy, and culture. Treated thoughtfully, it can expand women’s options and make the workplace more inclusive. Treated carelessly, it can deepen exhaustion and hide inequality behind the comfortable image of working in pajamas. The challenge for employers, policymakers, and workers is to shape remote work in a way that keeps its benefits—flexibility and access—while actively reducing its risks, especially the risks that fall most heavily on women.</p></div>
-                <details>
-                  <summary>Optional Sections</summary>
-                  <div class="row">
-                    <div>
-                      <div class="label">Outline</div>
-                      <div id="t2-out" class="field" contenteditable="true">[I. Intro • II. Pros • III. Cons • IV. How to make it work • V. Conclusion]</div>
-                    </div>
-                    <div>
-                      <div class="label">References</div>
-                      <div id="t2-ref" class="field" contenteditable="false"><ul>
-  <li>World Economic Forum. (2023). <em>Future of Jobs Report 2023</em>.</li>
-  <li>McKinsey &amp; Company. (2022). <em>Women in the Workplace 2022</em>.</li>
-  <li>Eurofound. (2020). <em>Living, working and COVID-19</em>.</li>
-</ul></div>
-                    </div>
-                  </div>
-                </details>
-              </div>
-            </article>
-
-            <!-- Topic 3 -->
-            <article class="topic" id="t3">
-              <div class="topic-head">
-                <h3 id="t3-title" contenteditable="true">3. Women in Leadership: Quotas or Merit?</h3>
-                <span class="tag">Essay</span>
-              </div>
-              <div class="topic-body">
-                <div class="utils">
-                  <button class="btn copy" data-target="t3-full">Copy</button>
-                  <button class="btn" onclick="exportTxt('t3-full','topic3.txt')">Export .txt</button>
-                  <button class="btn" onclick="printBlock('t3-full')">Print</button>
-                  <span class="wc" id="wc-t3">0 words</span>
-                </div>
-                <div class="label">Full Essay</div>
-                <div id="t3-full" class="field full" contenteditable="true">[Write the entire essay here]</div>
-                <details>
-                  <summary>Optional Sections</summary>
-                  <div class="row">
-                    <div>
-                      <div class="label">Outline</div>
-                      <div id="t3-out" class="field" contenteditable="true">[I. Intro • II. Arguments for quotas • III. Arguments for merit only • IV. Possible middle ground • V. Conclusion]</div>
-                    </div>
-                    <div>
-                      <div class="label">References</div>
-                      <div id="t3-ref" class="field" contenteditable="false"><ul>
-  <li>Eagly, A. H., &amp; Carli, L. L. (2007). <em>Through the labyrinth: The truth about how women become leaders</em>. Harvard Business School Press.</li>
-  <li>Catalyst. (2020). <em>Women in leadership: Quick take</em>.</li>
-  <li>UN Women. (2021). <em>Women in leadership: Achieving an equal future</em>.</li>
-</ul></div>
-                    </div>
-                  </div>
-                </details>
-              </div>
-            </article>
-
-            <!-- Topic 4 -->
-            <article class="topic" id="t4">
-              <div class="topic-head">
-                <h3 id="t4-title" contenteditable="true">4. Overtime Culture: Dedication or Exploitation?</h3>
-                <span class="tag">Essay</span>
-              </div>
-              <div class="topic-body">
-                <div class="utils">
-                  <button class="btn copy" data-target="t4-full">Copy</button>
-                  <button class="btn" onclick="exportTxt('t4-full','topic4.txt')">Export .txt</button>
-                  <button class="btn" onclick="printBlock('t4-full')">Print</button>
-                  <span class="wc" id="wc-t4">0 words</span>
-                </div>
-                <div class="label">Full Essay</div>
-                <div id="t4-full" class="field full" contenteditable="true">[Write the entire essay here]</div>
-                <details>
-                  <summary>Optional Sections</summary>
-                  <div class="row">
-                    <div>
-                      <div class="label">Outline</div>
-                      <div id="t4-out" class="field" contenteditable="true">[I. Intro • II. Why overtime is praised • III. Hidden costs for women • IV. Alternatives • V. Conclusion]</div>
-                    </div>
-                    <div>
-                      <div class="label">References</div>
-                      <div id="t4-ref" class="field" contenteditable="false"><ul>
-  <li>International Labour Organization. (2019). <em>Working time and work–life balance around the world</em>.</li>
-  <li>OECD. (2021). <em>Gender equality and long working hours</em>.</li>
-  <li>Eurofound. (2017). <em>Working time patterns for sustainable work</em>.</li>
-</ul></div>
-                    </div>
-                  </div>
-                </details>
-              </div>
-            </article>
-
-            <!-- Topic 5 (still template) -->
-            <article class="topic" id="t5">
-              <div class="topic-head">
-                <h3 id="t5-title" contenteditable="true">5. Gender Pay Gap: Reality or Myth?</h3>
-                <span class="tag">Essay</span>
-              </div>
-              <div class="topic-body">
-                <div class="utils">
-                  <button class="btn copy" data-target="t5-full">Copy</button>
-                  <button class="btn" onclick="exportTxt('t5-full','topic5.txt')">Export .txt</button>
-                  <button class="btn" onclick="printBlock('t5-full')">Print</button>
-                  <span class="wc" id="wc-t5">0 words</span>
-                </div>
-                <div class="label">Full Essay</div>
-                <div id="t5-full" class="field full" contenteditable="true">[Write the entire essay here]</div>
-                <details>
-                  <summary>Optional Sections</summary>
-                  <div class="row">
-                    <div>
-                      <div class="label">Outline</div>
-                      <div id="t5-out" class="field" contenteditable="true">[I. Intro • II. Data • III. Critiques • IV. Intersections • V. Conclusion]</div>
-                    </div>
-                    <div>
-                      <div class="label">References</div>
-                      <div id="t5-ref" class="field" contenteditable="true">[APA/MLA]</div>
-                    </div>
-                  </div>
-                </details>
-              </div>
-            </article>
-
+      <!-- MAIN ARTICLES -->
+      <section>
+        <!-- TOPIC 1 -->
+        <article id="topic1" class="card">
+          <h2>1. Equal Pay for Equal Work</h2>
+          <p class="tagline">Why pay equity is more than a slogan.</p>
+          <div class="highlight">
+            Equal pay is often presented as a simple idea: if two people do the same job with the same level of responsibility, they should receive the same salary, regardless of gender. In practice, achieving this basic level of fairness is still a challenge in many workplaces.
           </div>
-        </div>
+          <p>
+            Discussions about equal pay usually start with a moral question: is it acceptable that men and women who perform similar tasks are rewarded differently? For most people, the answer is clearly no. Yet in many countries, official statistics still show differences in average earnings between men and women. These gaps are not always the result of a manager openly deciding to pay women less. Instead, they often emerge from a mixture of biased hiring decisions, differences in promotion opportunities, and the historical undervaluation of occupations where women form the majority of workers.
+          </p>
+          <p>
+            From a legal perspective, equal pay has already been recognized as a standard in many international agreements. The International Labour Organization and the European Union, for example, state that workers should receive equal pay for equal work or for work of equal value. The phrase “work of equal value” is important: it means that even if job titles are different, positions that require similar levels of skill, responsibility, and effort should not be paid in dramatically different ways simply because one field is dominated by men and another by women.
+          </p>
+          <p>
+            Critics sometimes argue that it is difficult to implement equal pay rules in reality. Salaries are influenced by market conditions, negotiation skills, and individual performance. Employers may also worry that pay audits will be expensive or that correcting unfair differences will create conflict. These concerns cannot be ignored, but they should not be used as an excuse for inaction. Many organizations have already demonstrated that it is possible to regularly review their pay structures, identify unexplained gaps, and make gradual adjustments toward fairness.
+          </p>
+          <p>
+            Equal pay is not only a women’s issue; it also affects overall trust in the workplace. When employees believe that their efforts are valued fairly, they are more likely to stay with the company, invest in their skills, and recommend the organization to others. For this reason, closing pay gaps is not merely a matter of reputation or public relations. It is a long-term investment in a healthier, more productive work environment where talent is rewarded according to contribution rather than gender.
+          </p>
+        </article>
+
+        <!-- TOPIC 2 -->
+        <article id="topic2" class="card">
+          <h2>2. Remote Work: Freedom or Distraction?</h2>
+          <p class="tagline">How working from home changes women’s experience of work.</p>
+          <div class="highlight">
+            Remote work became a global experiment during the COVID-19 pandemic. For many employees, especially women, it opened new possibilities—but also introduced new pressures inside the home.
+          </div>
+          <p>
+            Supporters of remote work usually highlight its flexibility. When employees can work from home, they save time on commuting, have more control over their daily schedule, and can manage personal responsibilities with less stress. For women who carry a large share of childcare and housework, this flexibility can make the difference between staying in the labor market and leaving it entirely. Remote work also allows women in smaller cities or conservative environments to participate in jobs that were previously limited to large offices or specific locations.
+          </p>
+          <p>
+            At the same time, remote work blurs the boundaries between professional and private life. Instead of leaving the office at the end of the day, many workers feel connected to their laptop almost all the time. Meetings move to online platforms, messages arrive at night, and it can be difficult to know when the workday truly ends. For women, this “always on” culture may collide with expectations at home. It becomes easy for them to do paid work and unpaid care work in the same space, often at the same time, which increases exhaustion rather than reducing it.
+          </p>
+          <p>
+            Employers also face new questions. Some managers worry that employees will be less productive or less committed when they are not physically visible. However, several international reports suggest that when goals are clear and digital tools are reliable, remote workers can maintain or even increase their productivity. The real risk is not necessarily that they work less, but that they become socially invisible. Without informal conversations at the office, remote workers—especially women—may receive less mentoring, fewer networking opportunities, and fewer chances to demonstrate leadership potential.
+          </p>
+          <p>
+            For these reasons, the debate should not be reduced to a simple choice between “remote” or “office.” A more useful question is how to design flexible work in a fair and sustainable way. Hybrid models, where employees spend part of the week in the office and part at home, are one promising solution. Clear rules about working hours, response times, and meeting schedules can protect people’s private time. When used thoughtfully, remote work can support women rather than overwhelm them, allowing them to build stable careers without giving up their personal responsibilities or well-being.
+          </p>
+        </article>
+
+        <!-- TOPIC 3 -->
+        <article id="topic3" class="card">
+          <h2>3. Women in Leadership: Quotas or Merit?</h2>
+          <p class="tagline">Rethinking how leadership positions are filled.</p>
+          <div class="highlight">
+            Many organizations still have mostly male leaders, even when women are well represented among students and junior employees. This raises the question: do we need special measures, such as quotas, to correct the imbalance?
+          </div>
+          <p>
+            Those who support gender quotas argue that talent alone is not enough to guarantee that women will reach decision-making positions. They point to structural barriers such as biased promotion practices, male-dominated professional networks, and stereotypical ideas about what a “leader” should look like. In this context, quotas are seen as a temporary tool to ensure that qualified women are not systematically excluded from boards, parliaments, and senior management teams. International data shows that countries and companies using quota systems usually see rapid increases in female representation.
+          </p>
+          <p>
+            Critics, however, worry that quotas might create doubts about the competence of women who are promoted under such policies. They claim that leadership positions should be awarded purely on merit and that any numerical target risks being unfair. This argument assumes that current systems already reward merit in a neutral way. Yet many studies suggest the opposite: when hiring and promotion decisions are informal or subjective, unconscious bias often plays a major role. Even small biases repeated over many years can produce leadership teams that do not reflect the diversity of the workforce.
+          </p>
+          <p>
+            A balanced view recognizes that quotas are not a perfect solution, but they can be a useful instrument when combined with strong merit-based standards. Clear criteria for leadership roles, transparent selection procedures, and independent panels can reduce the risk of favoritism for any group. At the same time, mentoring programs and leadership training for women can help build a strong pipeline of future candidates, making it easier to meet representation goals without lowering expectations.
+          </p>
+          <p>
+            Ultimately, the debate is not only about numbers but about culture. Organizations must decide what kind of leadership they value and whether they are willing to question long-standing habits that favor one group over others. When institutions open leadership spaces to women in a serious and structured way, they gain access to a wider range of perspectives, management styles, and problem-solving approaches. In the long run, this diversity can strengthen decision-making and improve public trust in the institutions themselves.
+          </p>
+        </article>
+
+        <!-- TOPIC 4 -->
+        <article id="topic4" class="card">
+          <h2>4. Overtime Culture: Dedication or Exploitation?</h2>
+          <p class="tagline">Long working hours and their impact on women.</p>
+          <div class="highlight">
+            In many workplaces, staying late in the office is treated as a sign of loyalty and professionalism. However, constant overtime can hide serious costs for workers, families, and organizations.
+          </div>
+          <p>
+            Overtime culture usually grows slowly. At first, extra hours may be presented as an exception during busy periods. Over time, they become the new normal, and employees start to believe that leaving on time shows a lack of commitment. Managers often reward those who are visibly present after hours, assuming they are more dedicated than colleagues who go home earlier. This logic ignores an obvious fact: productivity is not the same as the number of hours spent in the building or online.
+          </p>
+          <p>
+            For women, the effects of overtime are particularly heavy. Because many women still carry the main responsibility for childcare and housework, staying late at work means even more pressure when they finally return home. The “second shift” of unpaid labor begins just as the official workday ends. This double workload increases stress, reduces sleep, and leaves little time for rest or personal development. In the long term, some women may respond by refusing promotions, changing to part-time jobs, or leaving the labor market completely.
+          </p>
+          <p>
+            Research in labor economics and occupational health shows that long working hours are linked to higher risks of burnout, mental-health problems, and physical illness. These outcomes are costly not only for individuals but also for employers and national health systems. When employees reach a point of exhaustion, their ability to concentrate, innovate, and collaborate declines. Mistakes become more frequent, and the supposed benefits of overtime disappear.
+          </p>
+          <p>
+            A more sustainable approach is to focus on realistic workloads and clear priorities instead of heroic narratives about nonstop work. Companies can set limits on expected hours, discourage unnecessary late-night emails, and encourage managers to plan projects with reasonable deadlines. Flexible schedules, hybrid work options, and reliable childcare support can help women and men share both paid and unpaid responsibilities more fairly. By moving away from overtime culture, organizations do not lose dedication; they gain a more stable and healthy workforce that can perform well over many years, not just during a short period of intense effort.
+          </p>
+        </article>
+
+        <!-- TOPIC 5 -->
+        <article id="topic5" class="card">
+          <h2>5. The Gender Pay Gap: Myth or Reality?</h2>
+          <p class="tagline">Understanding the ongoing debate.</p>
+          <div class="highlight">
+            The term “gender pay gap” is often used in media and political discussions, but people do not always agree on what it really means or why it exists. Looking closely at the evidence helps move the debate beyond simple slogans.
+          </div>
+          <p>
+            In most countries, statistics show that women earn less, on average, than men over the course of their working lives. This difference is usually calculated as the gap between the median hourly wage of men and women across the economy. On its own, this number does not explain the reasons behind the gap, but it does raise important questions. Why do women appear in larger numbers in lower-paid sectors? Why are men still more common in high-paying leadership and technical roles?
+          </p>
+          <p>
+            Critics of the gender pay gap concept argue that when factors such as education, years of experience, and occupation are taken into account, the remaining difference becomes much smaller. They conclude that the gap is mainly the result of personal decisions: women may choose part-time work, select fields with lower salaries, or take career breaks for family reasons. While these elements are real, they do not fully answer why such choices are more common for women than for men, or why workplaces are structured in ways that make these choices more costly for women.
+          </p>
+          <p>
+            A growing number of researchers view the gender pay gap as the final result of several interacting forces: social expectations about caregiving, limited access to affordable childcare, unconscious bias in hiring and promotion, and the undervaluing of traditionally “feminine” types of work. From this perspective, the gap is neither a simple myth nor a fixed law of nature. It is a pattern that can change when institutions actively support equality through transparent pay systems, flexible work policies, and fair evaluation procedures.
+          </p>
+          <p>
+            For students and young professionals, understanding the gender pay gap is important not only for academic reasons but also for planning their own careers. Knowing how salary negotiations work, being aware of legal rights, and choosing employers that take equality seriously can all make a difference. Ultimately, the goal is not to win an argument about whether the gap “exists,” but to build a labor market where pay reflects skills, effort, and responsibility more than gender. This requires cooperation between governments, businesses, and individuals, as well as continued research to monitor progress over time.
+          </p>
+        </article>
+
+        <!-- REFERENCES -->
+        <article id="refs" class="card">
+          <h2>References</h2>
+          <p class="tagline">Selected sources used to support the arguments in this project.</p>
+
+          <h3>Topic 1 – Equal Pay</h3>
+          <ol class="refs-list">
+            <li>International Labour Organization. <em>Global Wage Report 2022–23: The impact of inflation and COVID-19 on wages and purchasing power</em>. ILO, 2022.</li>
+            <li>European Commission. <em>Equal Pay: Overview of EU Law and Policy</em>. Publications Office of the European Union, 2021.</li>
+            <li>World Economic Forum. <em>Global Gender Gap Report 2024</em>. World Economic Forum, 2024.</li>
+          </ol>
+
+          <h3>Topic 2 – Remote Work</h3>
+          <ol class="refs-list">
+            <li>Bloom, N. “Hybrid Work Is Here to Stay.” <em>Harvard Business Review</em>, 2022.</li>
+            <li>OECD. <em>Teleworking in the COVID-19 Pandemic: Trends and Prospects</em>. OECD Policy Responses, 2021.</li>
+            <li>UN Women. <em>Beyond COVID-19: A Feminist Plan for Sustainability and Social Justice</em>. United Nations, 2021.</li>
+          </ol>
+
+          <h3>Topic 3 – Women in Leadership</h3>
+          <ol class="refs-list">
+            <li>McKinsey &amp; Company and LeanIn.Org. <em>Women in the Workplace 2023</em>. McKinsey &amp; Company, 2023.</li>
+            <li>Eagly, A. H., &amp; Carli, L. L. <em>Through the Labyrinth: The Truth About How Women Become Leaders</em>. Harvard Business Review Press, 2007.</li>
+            <li>World Bank. <em>Women, Business and the Law 2023</em>. World Bank Group, 2023.</li>
+          </ol>
+
+          <h3>Topic 4 – Overtime &amp; Work–Life Balance</h3>
+          <ol class="refs-list">
+            <li>ILO. <em>Working Time and Work–Life Balance Around the World</em>. International Labour Organization, 2019.</li>
+            <li>Hochschild, A. R. <em>The Second Shift: Working Families and the Revolution at Home</em>. Penguin Books, 2012.</li>
+            <li>OECD. <em>Gender Equality and the Long Working Hours Culture</em>. OECD Policy Brief, 2020.</li>
+          </ol>
+
+          <h3>Topic 5 – Gender Pay Gap Debate</h3>
+          <ol class="refs-list">
+            <li>OECD. <em>The Pursuit of Gender Equality: An Uphill Battle</em>. OECD Publishing, 2017.</li>
+            <li>England, P. “The Gender Revolution: Uneven and Stalled.” <em>Gender &amp; Society</em>, vol. 24, no. 2, 2010, pp. 149–166.</li>
+            <li>World Economic Forum. <em>Global Gender Gap Report 2023</em>. World Economic Forum, 2023.</li>
+          </ol>
+        </article>
       </section>
 
-      <!-- TAB 2: SOURCES -->
-      <section id="tab-sources" class="container hidden" role="tabpanel">
-        <div class="grid">
-          <div class="panel source-list">
-            <div class="sources-tag">Core References</div>
-            <h2 class="subtitle">Key sources about women and work</h2>
-            <ol>
-              <li>International Labour Organization. <em>Global Wage Report</em> and <em>Working time and work–life balance around the world</em>.</li>
-              <li>OECD Data. <em>Gender wage gap</em> and reports on labour market equality.</li>
-              <li>World Economic Forum. <em>Future of Jobs Report</em>.</li>
-              <li>McKinsey &amp; Company. <em>Women in the Workplace</em> series.</li>
-              <li>UN Women &amp; Catalyst. Reports on women in leadership and corporate boards.</li>
-            </ol>
-          </div>
-          <div class="panel">
-            <div class="sources-tag">How to cite</div>
-            <p class="tagline">
-              Use APA or MLA depending on the teacher’s instructions. We can copy the short references from each topic panel and turn them into a longer “Works Cited” slide at the end of the presentation.
-            </p>
-            <div class="card">
-              <strong>APA Example</strong><br>
-              International Labour Organization. (2023). <em>Global Wage Report 2022–23: The impact of inflation and COVID-19 on wages and purchasing power</em>.
-            </div>
-          </div>
+      <!-- SIDEBAR -->
+      <aside>
+        <div class="card sidebar-card">
+          <h3>Project Overview</h3>
+          <ul class="sidebar-list">
+            <li>Topic 1: Equal pay and fairness in wages<span class="badge">Ali &amp; team</span></li>
+            <li>Topic 2: Remote work and flexibility</li>
+            <li>Topic 3: Women in leadership roles</li>
+            <li>Topic 4: Overtime and work–life balance</li>
+            <li>Topic 5: Debate on the gender pay gap</li>
+          </ul>
         </div>
-      </section>
 
-      <!-- TAB 3: SCHOLARS -->
-      <section id="tab-scholars" class="container hidden" role="tabpanel">
-        <div class="cols-3">
-          <div class="scholar">
-            <h3>International Labour Organization (ILO)</h3>
-            <p>Provides global data on wages, working hours, and labour standards. Useful for equal pay and overtime culture topics.</p>
-          </div>
-          <div class="scholar">
-            <h3>OECD</h3>
-            <p>Offers comparable statistics across countries on gender wage gaps, employment rates, and policy responses.</p>
-          </div>
-          <div class="scholar">
-            <h3>UN Women</h3>
-            <p>Focuses on women’s leadership, economic empowerment, and the impact of policy changes on gender equality.</p>
-          </div>
-          <div class="scholar">
-            <h3>McKinsey &amp; Company</h3>
-            <p>Publishes regular reports on women in the workplace, diversity, and the business impact of inclusion.</p>
-          </div>
-          <div class="scholar">
-            <h3>World Economic Forum</h3>
-            <p>Tracks global trends in jobs, skills, and gender gaps, especially after COVID-19 and digital transformation.</p>
-          </div>
-          <div class="scholar">
-            <h3>Eurofound</h3>
-            <p>Provides research on working conditions, remote work, and work–life balance in Europe.</p>
-          </div>
+        <div class="card sidebar-card">
+          <h3>How to Edit This Page</h3>
+          <p style="font-size:0.9rem; color:var(--muted);">
+            You can edit any paragraph directly from GitHub by opening <code>index.html</code>,
+            clicking the pencil icon, and changing the text to match your own style or teacher’s feedback.
+          </p>
         </div>
-      </section>
-
-      <!-- TAB 4: NOTES -->
-      <section id="tab-notes" class="container hidden" role="tabpanel">
-        <div class="grid">
-          <div class="panel">
-            <h2 class="subtitle">Group notes</h2>
-            <div id="notes-main" class="field note" contenteditable="true">
-              Use this space to write reminders for the group: who will speak for each topic, what examples to mention, or questions to ask the teacher.
-            </div>
-          </div>
-          <div class="panel">
-            <h2 class="subtitle">To-do list</h2>
-            <div id="notes-todo" class="field note" contenteditable="true">
-              – Finish essays for topics 3, 4, and 5<br>
-              – Turn key points into slides<br>
-              – Add data or statistics if required<br>
-              – Practice timing for the presentation
-            </div>
-          </div>
-        </div>
-      </section>
+      </aside>
     </main>
 
     <footer>
-      <div><span class="caps">Women &amp; Work</span> — English Group Project Workspace</div>
-      <div>Local autosave only • Edit passcode: <strong>aasu2025</strong></div>
+      <span>Women and Work – Group Project • Abdullah Al-Salem University</span>
     </footer>
   </div>
-
-  <script>
-    // Tiny helpers
-    const $ = (sel, root=document) => root.querySelector(sel);
-    const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-
-    // Tab switching
-    const tabButtons = $$('.tab-btn');
-    const tabSections = {
-      essays: $('#tab-essays'),
-      sources: $('#tab-sources'),
-      scholars: $('#tab-scholars'),
-      notes: $('#tab-notes')
-    };
-
-    tabButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const target = btn.dataset.tab;
-        tabButtons.forEach(b => b.classList.toggle('active', b === btn));
-        Object.entries(tabSections).forEach(([key, sec]) => {
-          sec.classList.toggle('hidden', key !== target);
-        });
-      });
-    });
-
-    // Edit mode with simple passcode
-    const PASSCODE_KEY = 'womenWorkPasscode';
-    const DEFAULT_PASSCODE = 'aasu2025'; // change if you want more privacy
-    if (!localStorage.getItem(PASSCODE_KEY)) {
-      localStorage.setItem(PASSCODE_KEY, DEFAULT_PASSCODE);
-    }
-
-    const enterBtn = $('#enterEdit');
-    const exitBtn = $('#exitEdit');
-    const lockStateSpan = $('#lockState');
-
-    function setEditable(enabled){
-      const root = document.body;
-      if(enabled){
-        root.classList.remove('locked'); root.classList.add('unlocked');
-        lockStateSpan.textContent = 'Unlocked';
-      }else{
-        root.classList.remove('unlocked'); root.classList.add('locked');
-        lockStateSpan.textContent = 'Locked';
-      }
-      // toggle contenteditable for all fields/headers explicitly
-      $$('#tab-essays .field, #tab-essays h3[contenteditable], #tab-notes .field').forEach(el => {
-        const lockedAttr = el.getAttribute('data-locked') === 'true';
-        if(!lockedAttr){
-          el.setAttribute('contenteditable', enabled ? 'true' : 'false');
-        }
-      });
-    }
-
-    enterBtn.addEventListener('click', () => {
-      const userCode = prompt('Enter edit passcode:');
-      if(!userCode) return;
-      const saved = localStorage.getItem(PASSCODE_KEY) || DEFAULT_PASSCODE;
-      if(userCode === saved){
-        setEditable(true);
-      }else{
-        alert('Incorrect passcode');
-      }
-    });
-
-    exitBtn.addEventListener('click', () => setEditable(false));
-
-    // Mark some fields as always locked (full essays 1 & 2 by default)
-    ['t1-full','t1-ref','t2-full','t2-ref','t3-ref','t4-ref'].forEach(id => {
-      const el = document.getElementById(id);
-      if(el) el.setAttribute('data-locked','true');
-    });
-
-    // Word counts for each full essay field
-    function updateWordCount(id){
-      const el = document.getElementById(id);
-      if(!el) return;
-      const text = el.innerText || el.textContent || '';
-      const words = text.trim().split(/\s+/).filter(Boolean);
-      const wcEl = document.getElementById('wc-' + id.split('-')[0]);
-      if(wcEl) wcEl.textContent = words.length + ' words';
-    }
-
-    ['t1-full','t2-full','t3-full','t4-full','t5-full'].forEach(id => {
-      const el = document.getElementById(id);
-      if(!el) return;
-      updateWordCount(id);
-      el.addEventListener('input', () => updateWordCount(id));
-    });
-
-    // Expand / collapse all
-    const expandAllBtn = $('#expandAll');
-    const collapseAllBtn = $('#collapseAll');
-
-    expandAllBtn.addEventListener('click', () => {
-      $$('#tab-essays article details').forEach(d => d.open = true);
-    });
-    collapseAllBtn.addEventListener('click', () => {
-      $$('#tab-essays article details').forEach(d => d.open = false);
-    });
-
-    // Copy buttons
-    $$('.btn.copy').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const id = btn.dataset.target;
-        const field = document.getElementById(id);
-        if(!field) return;
-        const text = field.innerText || field.textContent || '';
-        try{
-          await navigator.clipboard.writeText(text.trim());
-          btn.textContent = 'Copied!';
-          setTimeout(() => btn.textContent = 'Copy', 1400);
-        }catch(e){
-          alert('Copy not supported here, sorry.');
-        }
-      });
-    });
-
-    // Export .txt
-    function exportTxt(id, filename){
-      const field = document.getElementById(id);
-      if(!field) return;
-      const text = (field.innerText || field.textContent || '').trim();
-      const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    }
-    window.exportTxt = exportTxt;
-
-    // Print single block
-    function printBlock(id){
-      const field = document.getElementById(id);
-      if(!field) return;
-      const w = window.open('', '_blank');
-      w.document.write('<pre style="font-family:system-ui, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif; white-space:pre-wrap; line-height:1.6;">' +
-        field.innerText.replace(/</g,'&lt;') + '</pre>');
-      w.document.close();
-      w.focus();
-      w.print();
-    }
-    window.printBlock = printBlock;
-
-    // Autosave for editable fields (except locked ones)
-    const SAVE_KEY = 'womenWorkAutosave';
-    function loadAutosave(){
-      try{
-        const raw = localStorage.getItem(SAVE_KEY);
-        if(!raw) return;
-        const data = JSON.parse(raw);
-        Object.entries(data).forEach(([id,html]) => {
-          const el = document.getElementById(id);
-          if(el && el.getAttribute('data-locked') !== 'true'){
-            el.innerHTML = html;
-          }
-        });
-      }catch(e){}
-    }
-    function saveAutosave(){
-      const data = {};
-      $$('.field').forEach(el => {
-        if(el.getAttribute('data-locked') === 'true') return;
-        if(el.id){
-          data[el.id] = el.innerHTML;
-        }
-      });
-      try{
-        localStorage.setItem(SAVE_KEY, JSON.stringify(data));
-      }catch(e){}
-    }
-    loadAutosave();
-    setInterval(saveAutosave, 3000);
-
-    // Reset placeholders
-    const resetBtn = $('#resetEssays');
-    resetBtn.addEventListener('click', () => {
-      if(!confirm('This will clear optional fields and templates but keep Essays 1 and 2. Continue?')) return;
-      ['t3-full','t4-full','t5-full','t1-out','t2-out','t3-out','t4-out','t5-out','notes-main','notes-todo'].forEach(id => {
-        const el = document.getElementById(id);
-        if(el && el.getAttribute('data-locked') !== 'true'){
-          el.innerHTML = el.id.endsWith('-full') ? '[Write the entire essay here]' : el.innerHTML;
-        }
-      });
-      saveAutosave();
-    });
-  </script>
 </body>
 </html>
-
