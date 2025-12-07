@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Women & Work – Extended Essay (2025)</title>
+<title>Women & Work – Group Project (2025)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ================= ROOT VARIABLES ================= */
 :root {
   --navy: #0e1c43;
   --teal: #60c2a0;
@@ -15,24 +17,54 @@
   --bg: #f5f7fb;
   --text: #111827;
   --muted: #6b7280;
-  --fs: 19px;
+  --card: #ffffff;
+  --fs: 18px;
   --content: 1100px;
 }
 
+/* ================= RESET ================= */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
-  background: var(--bg);
   font-family: "Poppins", sans-serif;
-  font-size: var(--fs);
+  background: var(--bg);
   color: var(--text);
-  line-height: 1.9;
+  font-size: var(--fs);
+  line-height: 1.85;
   text-align: justify;
+  -webkit-font-smoothing: antialiased;
 }
 
-html { scroll-behavior: smooth; }
+/* ================= NAVBAR ================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(14,28,67,0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px;
+  border-bottom: 3px solid var(--gold);
+  z-index: 999;
+}
+.navbar a {
+  margin-left: 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: .2s;
+}
+.navbar a:hover { opacity: 0.7; }
 
-/* PROGRESS BAR */
+/* Logo SVG */
+.logo {
+  width: 42px;
+  height: 42px;
+  fill: #fff;
+}
+
+/* Progress bar */
 #progress {
   position: fixed;
   top: 0;
@@ -40,125 +72,115 @@ html { scroll-behavior: smooth; }
   height: 4px;
   background: var(--gold);
   width: 0%;
-  z-index: 2000;
+  z-index: 1000;
 }
 
-/* NAVBAR */
-.navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: rgba(14,28,67,0.90);
-  backdrop-filter: blur(8px);
-  padding: 14px 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid var(--gold);
-  z-index: 1500;
-}
-
-.navbar a {
-  color: white;
-  margin-left: 20px;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: .2s;
-}
-.navbar a:hover { color: var(--gold); }
-
-/* SVG LOGO */
-.logo {
-  width: 48px;
-  height: 48px;
-  fill: none;
-  stroke: white;
-  stroke-width: 5;
-}
-
-/* HEADER */
+/* ================= HEADER ================= */
 header {
-  padding: 130px 20px 50px;
+  padding: 110px 20px 40px;
   background: linear-gradient(135deg, var(--navy), var(--teal));
-  color: white;
+  color: #fff;
   text-align: center;
-  border-bottom: 5px solid var(--gold);
+  border-bottom: 4px solid var(--gold);
 }
-
-header h1 {
-  font-size: 2.8rem;
-  font-weight: 700;
-}
-
-header .sub {
-  margin-top: 10px;
-  opacity: 0.9;
-}
+header h1 { font-size: 2.5rem; font-weight: 700; }
+header .sub { margin-top: 8px; opacity: 0.9; }
 
 .members {
-  margin: 25px auto;
-  padding: 18px;
-  max-width: 650px;
+  margin: 18px auto;
+  padding: 16px;
   background: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 14px;
+  border-radius: 12px;
+  max-width: 600px;
+  font-size: 0.95rem;
 }
 
-/* TOOLS */
-.tools {
+/* ================= TABLE OF CONTENTS ================= */
+.toc {
   max-width: var(--content);
   margin: 30px auto;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  padding: 20px;
+  background: #fff;
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
 }
-
-.btn {
-  background: #0f172a;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid #334155;
-  cursor: pointer;
+.toc h2 { font-size: 1.3rem; margin-bottom: 10px; }
+.toc a {
+  display: block;
+  text-decoration: none;
+  color: var(--navy);
+  padding: 6px 0;
   transition: 0.2s;
 }
-.btn:hover {
-  background: var(--gold);
-  color: black;
-}
+.toc a:hover { color: var(--gold); }
 
-/* ESSAY SECTION */
+/* ================= CONTENT ================= */
 section {
   max-width: var(--content);
-  margin: 35px auto;
-  padding: 32px;
-  background: white;
+  margin: 30px auto;
+  padding: 26px;
+  background: var(--card);
   border-radius: 18px;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 8px 28px rgba(15,23,42,0.12);
+  box-shadow: 0 10px 30px rgba(15,23,42,0.12);
+  transition: 0.3s;
+}
+section:hover { transform: translateY(-4px); }
+
+h2 { font-size: 1.6rem; color: var(--navy); margin-bottom: 10px; }
+.sub { font-size: 1rem; color: var(--muted); margin-bottom: 14px; }
+
+.refs-title { font-size: 1.05rem; margin-top: 14px; font-weight: 600; }
+.refs ul { margin-left: 24px; margin-top: 8px; }
+
+.footer {
+  margin-top: 40px;
+  padding: 26px;
+  text-align: center;
+  background: #0e1c43;
+  color: white;
+  font-size: 0.8rem;
 }
 
-h2 { 
-  font-size: 1.9rem; 
-  margin-bottom: 14px;
-  color: var(--navy);
+/* ================= MODES ================= */
+body.dark {
+  background: #020617;
+  color: #e5e7eb;
 }
-
-p { margin-bottom: 22px; }
-
-/* MODES */
-body.dark { background: #020617; color: #e5e7eb; }
 body.dark section { background: #0a0f24; border-color: #1e293b; }
-
-body.pro { font-family: "Crimson Text", serif; font-size: 21px; }
-
+body.pro { font-family: "Crimson Text", serif; font-size: 20px; }
 body.focus section { max-width: 800px; }
 
+/* Edit Mode */
 body.edit [data-editable] {
   outline: 2px dashed var(--gold);
   outline-offset: 4px;
 }
 
+/* Tools */
+.tools {
+  max-width: var(--content);
+  margin: 22px auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.btn {
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid #ccc;
+  background: #0f172a;
+  color: #fff;
+  cursor: pointer;
+  font-size: .9rem;
+  transition: 0.2s;
+}
+.btn:hover { background: var(--gold); color: #000; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
 </style>
 </head>
 
@@ -169,19 +191,22 @@ body.edit [data-editable] {
 <!-- NAVBAR -->
 <div class="navbar">
   <svg class="logo" viewBox="0 0 100 100">
-    <circle cx="50" cy="50" r="44" />
-    <path d="M20 60 Q50 18 80 60" />
+    <circle cx="50" cy="50" r="46" stroke="white" stroke-width="6" fill="none"/>
+    <path d="M20 60 Q50 15 80 60" stroke="white" stroke-width="6" fill="none"/>
   </svg>
-
   <div>
-    <a href="#essay">Essay</a>
-    <a href="#refs">References</a>
+    <a href="#equal">Equal Pay</a>
+    <a href="#remote">Remote Work</a>
+    <a href="#lead">Leadership</a>
+    <a href="#over">Overtime</a>
+    <a href="#gap">Pay Gap</a>
+    <a href="#allrefs">References</a>
   </div>
 </div>
 
 <!-- HEADER -->
 <header>
-  <h1>Women and Work – Extended Academic Essay</h1>
+  <h1>Women and Work</h1>
   <div class="sub">Abdullah Al-Salem University · College of Engineering · 2025</div>
 
   <div class="members">
@@ -189,6 +214,17 @@ body.edit [data-editable] {
     Ali Hussain Dashti · Mohammad Hani Bonashi · Mahdi Qassem · Mishal Almutairi · Adel Alrubaei
   </div>
 </header>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <a href="#equal">1. Equal Pay</a>
+  <a href="#remote">2. Remote Work</a>
+  <a href="#lead">3. Women in Leadership</a>
+  <a href="#over">4. Overtime Culture</a>
+  <a href="#gap">5. Gender Pay Gap</a>
+  <a href="#allrefs">6. Complete References</a>
+</div>
 
 <!-- TOOLS -->
 <div class="tools">
@@ -198,106 +234,170 @@ body.edit [data-editable] {
   <button class="btn" onclick="toggleFocus()">Focus</button>
   <button class="btn" onclick="togglePro()">Pro Mode</button>
   <button class="btn" onclick="toggleEdit()">Edit Mode</button>
-  <button class="btn" onclick="readEssay()">Read Aloud</button>
+  <button class="btn" onclick="readText()">Read Aloud</button>
 </div>
 
-<!-- ESSAY START -->
-<section id="essay">
-<h2>Extended Academic Essay on Women and Work</h2>
+<!-- ================= SECTIONS ================= -->
+
+<section id="equal">
+<h2>Equal Pay</h2>
+<div class="sub">Why pay differences persist despite equal roles.</div>
 
 <p data-editable>
-<p data-editable>
-Women’s participation in the workforce has undergone profound transformation over the last century, yet the modern labor landscape continues to reflect deep structural inequalities that shape the experiences of women across different industries, countries, and socioeconomic backgrounds. Despite substantial progress in educational attainment, representation in various fields, and legal protections, women continue to face challenges that undermine their economic participation and long-term career stability. Understanding women’s position in contemporary workplaces requires examining not only numerical disparities but also the historical, cultural, and institutional systems that influence opportunity, compensation, leadership, and quality of life. Across societies, the relationship between gender and labor remains deeply interconnected with social norms, economic incentives, and policy frameworks that both advance and constrain progress. This essay offers an extended analytical exploration of these themes, drawing on international research, comparative findings, and multidisciplinary perspectives to understand why disparities persist—and how they can be addressed through strategic, systematic change.
-
-One of the foundational challenges in discussing women and work is the persistent gender wage gap, a phenomenon that continues despite decades of advocacy, policy reform, and public attention. Equal pay is conceptually straightforward: individuals performing the same or equivalent work should receive equal compensation. However, empirical evidence consistently shows that women earn less than men even after controlling for education, experience, and occupational field. These wage differences result from complex intersections of hiring practices, negotiation environments, employer expectations, and institutional bias. In many cases, women are offered lower initial salaries than male counterparts—a difference that compounds over time through raises, bonuses, and promotions. Furthermore, industries dominated by women often suffer from lower valuation, reinforcing the economic undervaluing of labor typically associated with femininity. Salary transparency, standardized pay scales, and mandated reporting have proven effective tools for narrowing unexplained wage differences, demonstrating the importance of structural solutions rather than framing the issue as one of individual negotiation skill. Equal pay is not merely a fairness principle; it is a strategic economic requirement for sustainable growth and talent retention.
-
-Parallel to wage-related disparities, remote work presents both opportunities and hidden burdens that uniquely affect women. The shift toward flexible, home-based work arrangements has been one of the most significant workplace changes of the 21st century, accelerated by global events that forced institutions to reevaluate traditional models of productivity. Remote work offers numerous advantages—reduced commuting time, greater autonomy, and improved work-life balance for some employees. Yet, for many women, these benefits coexist with increased domestic pressures that transform flexibility into invisible labor expansion. When professional and personal responsibilities occupy the same physical environment, boundaries often collapse, allowing work demands to seep into all hours of the day. Women, who still perform the majority of unpaid household and caregiving labor in most societies, absorb this shift disproportionately. Thus, remote work without structural safeguards risks reinforcing gender inequalities by extending women’s workday beyond recognition. Research demonstrates that organizations with clear communication norms, flexible scheduling, and mental health support reduce these pressures, whereas companies that encourage constant availability magnify them. Remote work can be empowering—but only within systems that actively compensate for gendered imbalances in domestic labor expectations.
-
-Leadership representation remains another critical dimension of gender inequality in the workplace. Despite rising participation rates, women occupy a disproportionally small percentage of executive and senior leadership positions across corporate, academic, and governmental institutions. Structural barriers—including unconscious bias, limited access to influential networks, and assumptions about women’s commitment to long-term leadership due to caregiving responsibilities—continue to restrict upward mobility. Moreover, traditional leadership archetypes, which value assertiveness and dominance, often disadvantage women whose leadership styles may differ but are equally effective. Research consistently shows that organizations with gender-diverse leadership outperform those without it, exhibiting stronger financial results, innovative decision-making, and more balanced management cultures. Yet change remains slow. Achieving equitable leadership representation requires sustained institutional commitment, transparent promotion criteria, mentorship programs, and policies that support work-life integration. The imperative is not symbolic: inclusive leadership cultivates resilience, adaptability, and long-term organizational success.
-
-Beyond leadership, overtime culture presents one of the most pervasive threats to employee well-being, particularly for women balancing dual responsibilities. Modern workplaces increasingly associate long hours with dedication, productivity, and ambition—despite overwhelming evidence that extended working hours reduce efficiency and harm physical and psychological health. According to the World Health Organization, working more than 55 hours per week significantly increases the risk of heart disease, stroke, and chronic exhaustion. Women experience these harms at heightened levels due to additional unpaid care work that continues even after formal work hours end. This dual workload creates cycles of burnout that diminish performance, reduce engagement, and lead many women to exit the workforce prematurely. The normalization of overtime reflects deeper institutional failures: unrealistic performance expectations, understaffing, and inadequate boundaries between personal and professional time. Addressing overtime culture requires organizations to embrace sustainable productivity models, prioritize rest, and recognize the essential role of work-life balance in employee retention and organizational health.
-
-The gender pay gap, distinct from but related to equal pay concerns, remains one of the most persistent structural inequities in global labor systems. While equal pay focuses on compensation for identical work, the gender pay gap encompasses broader economic patterns shaped by occupational segregation, reduced access to leadership, career interruptions, and differing societal expectations. Women are disproportionately represented in lower-paying, care-oriented professions that are historically undervalued despite their essential social role. Additionally, career breaks related to maternity and caregiving responsibilities significantly reduce long-term earning potential. These factors contribute to cumulative disadvantages across a woman’s career, limiting financial independence, retirement security, and overall economic mobility. Closing the gender pay gap requires adopting comprehensive policy measures—such as subsidized childcare, paid parental leave, and meaningful pay transparency—as well as initiatives that push organizations to evaluate internal practices that perpetuate inequality. Cultural change is equally vital: societies must reexamine the assumptions and norms that undervalue women’s labor and restrict their economic opportunities.
-
-Taken together, these dimensions illustrate that women’s participation in the workforce cannot be fully understood through isolated issues; the challenges are interconnected, reflecting systemic structures that shape women’s experiences across industries and life stages. Wage disparities, remote work pressures, leadership barriers, overtime culture, and the gender pay gap all converge to influence women’s economic security, well-being, and long-term career outcomes. Therefore, solutions must be holistic, grounded in policy innovation, organizational restructuring, and cultural transformation. The path toward workplace equity requires not only regulatory frameworks but also shifts in collective consciousness about gender, labor, and value. Modern economies depend on the full participation of their workforce, and advancing gender equity is not merely a moral imperative—it is a catalyst for national development, organizational excellence, and social progress.
-
-In conclusion, the journey toward equal opportunity for women in the workplace remains ongoing, marked by achievements, setbacks, and evolving dynamics. While progress has undoubtedly been made, significant challenges continue to hinder fair and equitable participation. By understanding the systemic nature of workplace inequalities—spanning compensation, domestic expectations, leadership pipelines, labor division, and professional culture—societies and organizations can design strategies that promote meaningful change. Sustainable progress requires collective responsibility and intentional action: policymakers must implement supportive legislation, institutions must adopt equitable practices, and individuals must challenge harmful stereotypes and assumptions. Empowering women in the workforce is not only a matter of justice but a strategic investment in stronger economies, healthier communities, and a more inclusive future. The pursuit of equity benefits everyone, and its realization represents one of the defining tasks of modern society.
+Equal pay represents one of the most fundamental principles of workplace fairness: that individuals performing the same job under similar conditions should receive equal compensation. Despite this long-established expectation, the wage gap continues to appear in numerous industries worldwide. These discrepancies stem from hiring bias, uneven negotiation environments, and limited transparency in salary structures. Women often begin their careers at slightly lower starting salaries, and these small differences compound over time, shaping lifetime earning trajectories.
+<br><br>
+Recent evidence shows that implementing salary-transparency laws and requiring employers to publish pay-equity reports significantly reduces unexplained wage differences. Transparent systems encourage accountability and limit subjective evaluation. Organizations that review compensation annually tend to show improved internal fairness and higher employee satisfaction. Equal pay is not merely a moral value; it is a measurable driver of productivity, retention, and institutional trust.
 </p>
+
+<div class="refs-title">References</div>
+<div class="refs">
+<ul>
+<li>CIPD. (2023). Gender pay gap reporting.</li>
+<li>Hegewisch & Tesfaselassie. (2022). Equal pay policies.</li>
+</ul>
+</div>
 </section>
 
-<!-- REFERENCES SECTION -->
-<section id="refs">
-  <h2>Complete References</h2>
-  <p>
-    Below is the full list of academic references cited throughout this extended essay.
-    These sources reflect international research and multidisciplinary perspectives on
-    women’s participation in the workforce, gender disparities, labor economics, and social
-    policy.
-  </p>
 
-  <ul style="margin-left:25px; line-height:1.9;">
-    <li>Alfarran, A. (2021). Remote work and women’s balance: A regional analysis of gendered labor distribution.</li>
-    <li>Bulińska-Stangrecka, H. (2020). Work-life conflict in remote work: Gender differences in digital environments.</li>
-    <li>CIPD. (2023). Gender pay gap reporting: Structural barriers and employer obligations.</li>
-    <li>European Parliament. (2025). Gender pay gap report: Economic, social, and policy implications.</li>
-    <li>Hegewisch, A., & Tesfaselassie, A. (2022). Equal pay policies: Institutional strategies to reduce wage inequality.</li>
-    <li>Khan, L. (2025). Women’s economic empowerment in a changing labor landscape.</li>
-    <li>Magda, I., et al. (2019). Women managers and organizational pay structures: A comparative assessment.</li>
-    <li>OECD. (2025). Women in leadership: Trends, challenges, and global indicators.</li>
-    <li>WHO & ILO. (2021). Long working hours and global health risks: A joint epidemiological study.</li>
-    <li>Yang, L., et al. (2023). Overtime and well-being: Gendered impacts of extended working hours.</li>
-  </ul>
+<section id="remote">
+<h2>Remote Work</h2>
+<div class="sub">Flexibility and hidden pressures.</div>
+
+<p data-editable>
+Remote work has transformed modern employment, offering flexibility, autonomy, and relief from lengthy commutes. However, the shift toward home-based work has produced new challenges, particularly for women who manage the majority of domestic responsibilities. The merging of personal and professional spaces stretches the workday beyond traditional boundaries. Many women report higher emotional strain, constant digital availability, and difficulty separating rest from responsibility.
+<br><br>
+Research highlights that remote-work outcomes depend heavily on organizational expectations. Workplaces that provide flexible scheduling, manageable communication loads, and mental-health support tend to reduce stress and prevent burnout. Conversely, environments that push constant responsiveness or poorly defined boundaries can intensify gender-based workload inequalities. Remote work can support work-life balance—but only when paired with thoughtful management and equitable policies.
+</p>
+
+<div class="refs-title">References</div>
+<div class="refs">
+<ul>
+<li>Alfarran. (2021). Remote work and women's balance.</li>
+<li>Bulińska-Stangrecka. (2020). Work-life conflict in remote work.</li>
+</ul>
+</div>
 </section>
 
-<!-- FOOTER -->
-<footer style="margin-top:50px; padding:22px; background:#0e1c43; color:white; text-align:center;">
-  © 2025 · Abdullah Al-Salem University · Women & Work Extended Essay
-</footer>
 
-<!-- ==================== JAVASCRIPT ==================== -->
+<section id="lead">
+<h2>Women in Leadership</h2>
+<div class="sub">Why representation matters.</div>
+
+<p data-editable>
+Women remain significantly underrepresented in leadership roles across industries, despite substantial growth in workforce participation. Studies consistently show that leadership teams with strong gender diversity benefit from richer perspectives, balanced decision-making, and improved organizational outcomes. Companies with more women in management positions often experience narrower wage gaps and stronger mentorship cultures.
+<br><br>
+Barriers limiting women’s leadership progression include unconscious bias, limited access to high-level mentorship, and career interruptions related to family responsibilities. These structural challenges contribute to slower advancement, fewer promotions, and decreased visibility in decision-making spaces. Creating equitable pathways to leadership requires transparent promotion criteria, supportive organisational policies, and long-term investment in mentorship programs. Increasing women’s representation in leadership is not symbolic—it improves performance, innovation, and organizational resilience.
+</p>
+
+<div class="refs-title">References</div>
+<div class="refs">
+<ul>
+<li>OECD. (2025). Women in leadership.</li>
+<li>Magda et al. (2019). Women managers and pay gaps.</li>
+</ul>
+</div>
+</section>
+
+
+<section id="over">
+<h2>Overtime Culture</h2>
+<div class="sub">Long hours and long-term consequences.</div>
+
+<p data-editable>
+Overtime culture remains a persistent challenge in workplaces that equate long hours with dedication, productivity, or commitment. Yet research from the World Health Organization demonstrates that working more than 55 hours per week significantly increases the risk of cardiovascular disease, chronic fatigue, and stress-related disorders. Women are disproportionately affected due to additional unpaid household work, creating a dual burden that stretches both time and energy.
+<br><br>
+Extended workloads reduce productivity over time and damage well-being. Many women describe emotional exhaustion and burnout when balancing high professional demands with family responsibilities. Organizational reliance on excessive overtime leads to disengagement and turnover. Healthy workplaces prioritize manageable workloads, enforce boundaries, and cultivate cultures where rest is valued. Addressing overtime is a public-health requirement—not simply a personal choice.
+</p>
+
+<div class="refs-title">References</div>
+<div class="refs">
+<ul>
+<li>WHO & ILO. (2021). Long working hours.</li>
+<li>Yang et al. (2023). Overtime and well-being.</li>
+</ul>
+</div>
+</section>
+
+
+<section id="gap">
+<h2>Gender Pay Gap</h2>
+<div class="sub">Structural causes beyond individual choices.</div>
+
+<p data-editable>
+The gender pay gap reflects a broad societal pattern in which women earn less than men across most economic sectors. Contrary to popular assumptions, the gap cannot be explained solely by individual choices or differences in career paths. Instead, it emerges from structural issues such as occupational segregation, reduced access to leadership, interruptions in employment due to caregiving, and persistent gender stereotypes affecting hiring and promotion.
+<br><br>
+EU data show that women earn approximately 12% less than men on average, with wider gaps in high-pay technical and leadership fields. Career interruptions—often for maternity or family care—slow wage growth and reduce lifetime earnings. Policy tools such as childcare support, transparent pay frameworks, and inclusive leadership programs are effective in narrowing wage disparities. Closing the gender pay gap is not only an equity goal—it strengthens national productivity and supports long-term economic resilience.
+</p>
+
+<div class="refs-title">References</div>
+<div class="refs">
+<ul>
+<li>European Parliament. (2025). Gender pay gap report.</li>
+<li>Khan. (2025). Women’s economic empowerment.</li>
+</ul>
+</div>
+</section>
+
+
+<!-- ================= FULL REFERENCES ================= -->
+
+<section id="allrefs">
+<h2>Complete References</h2>
+<div class="sub">All sources used across the project.</div>
+
+<ul>
+<li>Alfarran. (2021). Remote work and women's balance.</li>
+<li>Bulińska-Stangrecka. (2020). Work-life conflict.</li>
+<li>CIPD. (2023). Gender pay gap reporting.</li>
+<li>European Parliament. (2025). Gender pay gap report.</li>
+<li>Hegewisch & Tesfaselassie. (2022). Equal pay policies.</li>
+<li>Khan. (2025). Women’s economic empowerment.</li>
+<li>Magda et al. (2019). Women managers and pay gaps.</li>
+<li>OECD. (2025). Women in leadership.</li>
+<li>WHO & ILO. (2021). Long working hours.</li>
+<li>Yang et al. (2023). Overtime and well-being.</li>
+</ul>
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<div class="footer">
+  © 2025 · Abdullah Al-Salem University · Women & Work Project  
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
 
 <script>
-// Progress bar script
-window.addEventListener("scroll", function () {
-  let scrollTop = document.documentElement.scrollTop;
-  let scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  let progress = (scrollTop / scrollHeight) * 100;
-  document.getElementById("progress").style.width = progress + "%";
-});
+// Progress bar
+window.onscroll = function () {
+  let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  let scrolled = (winScroll / height) * 100;
+  document.getElementById("progress").style.width = scrolled + "%";
+};
 
-// Font size adjuster
-let fs = 19;
+// Font size controls
+let fs = 18;
 function changeFont(n) {
-  fs = Math.min(26, Math.max(14, fs + n));
+  fs = Math.min(24, Math.max(14, fs + n));
   document.documentElement.style.setProperty("--fs", fs + "px");
 }
 
-// Dark mode
-function toggleDark() {
-  document.body.classList.toggle("dark");
-}
-
-// Focus mode
-function toggleFocus() {
-  document.body.classList.toggle("focus");
-}
-
-// Pro mode
-function togglePro() {
-  document.body.classList.toggle("pro");
-}
+// Modes
+function toggleDark() { document.body.classList.toggle("dark"); }
+function toggleFocus() { document.body.classList.toggle("focus"); }
+function togglePro() { document.body.classList.toggle("pro"); }
 
 // Edit mode
-let EDIT_PASS = "AASU2025";
+const PASS = "AASU2025";
 let editing = false;
 function toggleEdit() {
   if (!editing) {
     let p = prompt("Enter edit password:");
-    if (p !== EDIT_PASS) return alert("Incorrect password.");
+    if (p !== PASS) return alert("Incorrect password.");
     editing = true;
     document.body.classList.add("edit");
     document.querySelectorAll("[data-editable]").forEach(el => el.contentEditable = "true");
-    alert("Edit Mode Enabled. Click again to disable.");
   } else {
     editing = false;
     document.body.classList.remove("edit");
@@ -306,13 +406,11 @@ function toggleEdit() {
 }
 
 // Read aloud
-function readEssay() {
-  let text = document.getElementById("essay").innerText;
-  let speech = new SpeechSynthesisUtterance(text);
-  speech.lang = "en-US";
-  speech.pitch = 1;
-  speech.rate = 1;
-  window.speechSynthesis.speak(speech);
+function readText() {
+  let text = document.body.innerText;
+  let s = new SpeechSynthesisUtterance(text);
+  s.lang = "en-US";
+  speechSynthesis.speak(s);
 }
 </script>
 
